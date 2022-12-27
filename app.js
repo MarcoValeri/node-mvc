@@ -14,7 +14,7 @@ const shopRoutes = require('./routes/shop');
 
 // Controllers
 const errorsController = require('./controllers/error');
-const db = require('./util/database');
+const sequelize = require('./util/database');
 
 // Parse npm install --save body-parser
 app.use(bodyParser.urlencoded({extended: false}));
@@ -27,4 +27,12 @@ app.use(shopRoutes);
 // 404 error page
 app.use(errorsController.get404);
 
-app.listen(3000);
+// Sequelize
+sequelize
+    .sync()
+    .then(result => {
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    });
